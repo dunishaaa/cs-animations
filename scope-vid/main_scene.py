@@ -199,18 +199,20 @@ def hp_set_opacity(obj: VMobject, og_line: Line, vlt: ValueTracker):
 
 class DetallesScope(Scene):
     def construct(self):
-        self.next_section(skip_animations=False)
+        #ss
         tx_title = Text(
             "¿Qué es el scope(o alcance)?",
             t2w={"scope":BOLD},
+            t2c={"scope":BLUE}
             )
         self.play(Write(tx_title))
         self.play(Unwrite(tx_title), run_time=.3)
 
-        tx_def = Text(
-            "El scope determina que partes del programa pueden ser usadas, cuando podemos definir, redefinir y usar una variable sin conflictos",
-            width=10,
-#            t2c={"scope": BLUE_E, "definir": GREEN_A, "redefinir": GREEN_A, "usar": GREEN_A}
+        tx_def = Tex(
+            r"{0.5\textwidth}El scope determina que partes del programa "
+            r"pueden ser usadas, cuando podemos definir, redefinir y "
+            r"usar una variable sin conflictos",
+            tex_environment="minipage"
         )
         self.play(Write(tx_def))
 
@@ -218,6 +220,7 @@ class DetallesScope(Scene):
                         "Se pude delimitar con {} o indentando..."
                     ).to_edge(UP, buff=.7)
         
+        #ss 
         self.play(Write(tx_brackets))
 
         cb_js =Code(
@@ -237,8 +240,11 @@ class DetallesScope(Scene):
                     style=Code.styles_list[15],
                     language="Python",
                 ).scale(.5).next_to(cb_js, RIGHT, buff=1)
+        #rs
 
         self.play(Write(cb_js), Write(cb_py))
+
+        self.wait(2)
         
 
         
@@ -509,4 +515,3 @@ class Test3(Scene):
             )
 
         self.play(vt.animate.set_value(6), run_time=6, rate_func=linear)
-    

@@ -1,9 +1,13 @@
+# from manim import (BLUE, BLUE_E, BOLD, DOWN, LEFT, RED, RIGHT, UP, Arrow,
+#                   Create, FocusOn, Scene, Tex, Transform, Triangle, VGroup,
+#                   Write)
+
 from manim import *
-from random import randint
 
 
 class Intro(Scene):
     def construct(self):
+        # ss
         tx_que_funcion = Tex("¿Qué es una función?").scale(1.4)
         self.play(Write(tx_que_funcion))
 
@@ -182,143 +186,177 @@ def mv_dot(dot: Dot, og_line: Line, vlt: ValueTracker):
     start = og_line.get_start()[0]
     end = og_line.get_end()[0]
     vl = vlt.get_value()
-    if start <= vl <= end: 
+    if start <= vl <= end:
         dot.set_x(vlt.get_value())
+
 
 def hp_set_opacity(obj: VMobject, og_line: Line, vlt: ValueTracker):
     vl = vlt.get_value()
     start = og_line.get_start()[0]
     end = og_line.get_end()[0]
-    if start < vl > end: 
-        obj.set_opacity(.2)
-#        obj.set_stroke(width=2)
+    if start < vl > end:
+        obj.set_opacity(0.2)
+    #        obj.set_stroke(width=2)
     else:
         obj.set_opacity(1)
+
+
 #        obj.set_stroke(width=6)
-        
+
 
 class DetallesScope(Scene):
     def construct(self):
-        #ss
+        # ss
         tx_title = Text(
-            "¿Qué es el scope(o alcance)?",
-            t2w={"scope":BOLD},
-            t2c={"scope":BLUE}
-            )
+            "¿Qué es el scope(o alcance)?", t2w={"scope": BOLD}, t2c={"scope": BLUE}
+        )
         self.play(Write(tx_title))
-        self.play(Unwrite(tx_title), run_time=.3)
+        self.play(Unwrite(tx_title), run_time=0.3)
 
         tx_def = Tex(
             r"{0.5\textwidth}El scope determina que partes del programa "
             r"pueden ser usadas, cuando podemos definir, redefinir y "
             r"usar una variable sin conflictos",
-            tex_environment="minipage"
+            tex_environment="minipage",
         )
         self.play(Write(tx_def))
 
-        tx_brackets = Text(
-                        "Se pude delimitar con {} o indentando..."
-                    ).to_edge(UP, buff=.7)
-        
-        #ss 
+        tx_brackets = Text("Se pude delimitar con {} o indentando...").to_edge(
+            UP, buff=0.7
+        )
+
+        # ss
         self.play(Write(tx_brackets))
 
-        cb_js =Code(
-                    "scope.js",
-                    tab_width=4,
-                    background_stroke_width=1,
-                    background_stroke_color=WHITE,
-                    style=Code.styles_list[15],
-                    language="Javascript",
-                ).scale(.5).next_to(tx_brackets, DOWN, buff=1).shift(LEFT)
-        
-        cb_py =Code(
-                    "pyex.py",
-                    tab_width=4,
-                    background_stroke_width=1,
-                    background_stroke_color=WHITE,
-                    style=Code.styles_list[15],
-                    language="Python",
-                ).scale(.5).next_to(cb_js, RIGHT, buff=1)
-        #rs
+        cb_js = (
+            Code(
+                "scope.js",
+                tab_width=4,
+                background_stroke_width=1,
+                background_stroke_color=WHITE,
+                style=Code.styles_list[15],
+                language="Javascript",
+            )
+            .scale(0.5)
+            .next_to(tx_brackets, DOWN, buff=1)
+            .shift(LEFT)
+        )
+
+        cb_py = (
+            Code(
+                "pyex.py",
+                tab_width=4,
+                background_stroke_width=1,
+                background_stroke_color=WHITE,
+                style=Code.styles_list[15],
+                language="Python",
+            )
+            .scale(0.5)
+            .next_to(cb_js, RIGHT, buff=1)
+        )
+        # rs
 
         self.play(Write(cb_js), Write(cb_py))
 
         self.wait(2)
-        
 
-        
 
 class Scope(Scene):
     def construct(self):
-
         nm = NumberPlane().add_coordinates()
-        #self.add(nm)
+        # self.add(nm)
 
         color_palette = [BLUE, RED, PURPLE, YELLOW_E, ORANGE]
         lines_texts = ["Program", "main()", "if", "var_y", "for"]
 
-
-        gm_ln_ogs = [] 
-        #Initial guide-lines
+        gm_ln_ogs = []
+        # Initial guide-lines
         gm_ln_ogs.append(Line(start=[-6, 3.7, 0], end=[6, 3.7, 0], stroke_width=7))
-        gm_ln_ogs.append(Line(start=[-5.7, 3, 0], end=[5.7,3 ,0],stroke_width=7))
-        gm_ln_ogs.append(Line(start=[-5.0, 2.3, 0], end=[-0.2, 2.3,0],stroke_width=7))
-        gm_ln_ogs.append(Line(start=[0.1, 2.3, 0], end=[5.7, 2.3, 0],stroke_width=7))
-        gm_ln_ogs.append(Line(start=[3, 1.6, 0], end=[4.5, 1.6,0],stroke_width=7))
+        gm_ln_ogs.append(Line(start=[-5.7, 3, 0], end=[5.7, 3, 0], stroke_width=7))
+        gm_ln_ogs.append(Line(start=[-5.0, 2.3, 0], end=[-0.2, 2.3, 0], stroke_width=7))
+        gm_ln_ogs.append(Line(start=[0.1, 2.3, 0], end=[5.7, 2.3, 0], stroke_width=7))
+        gm_ln_ogs.append(Line(start=[3, 1.6, 0], end=[4.5, 1.6, 0], stroke_width=7))
 
-
-
-        #Dots to begining of guide-lines
+        # Dots to begining of guide-lines
         gm_dots = [
-            Dot(gm_ln_ogs[i].get_start(), color=color_palette[i]).scale(1.3) 
+            Dot(gm_ln_ogs[i].get_start(), color=color_palette[i]).scale(1.3)
             for i in range(len(color_palette))
         ]
 
-        #Color line redraw
+        # Color line redraw
         gm_ln_colored = [
             always_redraw(
                 lambda i=i: Line(
-                    start=gm_ln_ogs[i].get_start(), end=gm_dots[i].get_center(), color=color_palette[i], stroke_width=7
-                    )
+                    start=gm_ln_ogs[i].get_start(),
+                    end=gm_dots[i].get_center(),
+                    color=color_palette[i],
+                    stroke_width=7,
                 )
-                for i in range(len(color_palette))
-            ]
+            )
+            for i in range(len(color_palette))
+        ]
 
-        gm_ln_cb = [] 
-        gm_ln_cb.append(Line(start=[-6.4, 2.0, 0],  end=[-6.4, -3.0, 0], color=BLUE, stroke_width=4))
-        gm_ln_cb.append(Line(start=[-6.2, 1.8, 0],  end=[-6.2, -2.85, 0], color=RED, stroke_width=4))
-        gm_ln_cb.append(Line(start=[-6.0, 1.4, 0],  end=[-6.0, -0.1, 0], color=PURPLE, stroke_width=4))
-        gm_ln_cb.append(Line(start=[-6.0, -0.3, 0], end=[-6.0, -2.85, 0], color=YELLOW_E, stroke_width=4))
-        gm_ln_cb.append(Line(start=[-5.8, -1.6, 0], end=[-5.8, -2.6, 0], color=ORANGE, stroke_width=4))
-
-
+        gm_ln_cb = []
+        gm_ln_cb.append(
+            Line(start=[-6.4, 2.0, 0], end=[-6.4, -3.0, 0], color=BLUE, stroke_width=4)
+        )
+        gm_ln_cb.append(
+            Line(start=[-6.2, 1.8, 0], end=[-6.2, -2.85, 0], color=RED, stroke_width=4)
+        )
+        gm_ln_cb.append(
+            Line(
+                start=[-6.0, 1.4, 0], end=[-6.0, -0.1, 0], color=PURPLE, stroke_width=4
+            )
+        )
+        gm_ln_cb.append(
+            Line(
+                start=[-6.0, -0.3, 0],
+                end=[-6.0, -2.85, 0],
+                color=YELLOW_E,
+                stroke_width=4,
+            )
+        )
+        gm_ln_cb.append(
+            Line(
+                start=[-5.8, -1.6, 0], end=[-5.8, -2.6, 0], color=ORANGE, stroke_width=4
+            )
+        )
 
         gm_ln_ini_color_lines = [
-            Line(start=[-6, 1, 0], end=[-6, -2, 0], stroke_width=10, color=color_palette[i]).scale(1.5)
+            Line(
+                start=[-6, 1, 0],
+                end=[-6, -2, 0],
+                stroke_width=10,
+                color=color_palette[i],
+            ).scale(1.5)
             for i in range(len(color_palette))
         ]
         tx_program_parts = [
-            Text(lines_texts[i], color=color_palette[i], slant=ITALIC, font_size=20).next_to(gm_ln_ini_color_lines[i], RIGHT, buff=.2)
+            Text(
+                lines_texts[i], color=color_palette[i], slant=ITALIC, font_size=20
+            ).next_to(gm_ln_ini_color_lines[i], RIGHT, buff=0.2)
             for i in range(len(lines_texts))
         ]
 
-
-
-        codeB_scope= Code(
-            "scope.js",
-            tab_width=4,
-            background_stroke_width=1,
-            background_stroke_color=WHITE,
-            style=Code.styles_list[15],
-            language="Javascript",
-        ).scale(.7).to_edge(LEFT, buff=.6).shift(DOWN*.5).scale(1.1)
+        codeB_scope = (
+            Code(
+                "scope.js",
+                tab_width=4,
+                background_stroke_width=1,
+                background_stroke_color=WHITE,
+                style=Code.styles_list[15],
+                language="Javascript",
+            )
+            .scale(0.7)
+            .to_edge(LEFT, buff=0.6)
+            .shift(DOWN * 0.5)
+            .scale(1.1)
+        )
         displace = ORIGIN - codeB_scope.get_center() + DOWN * 1.3
 
         codeB_scope.shift(displace)
         for ln in gm_ln_cb:
             ln.scale(1.1).shift(displace)
-
 
         self.add(codeB_scope)
 
@@ -326,116 +364,118 @@ class Scope(Scene):
         self.play(*[Write(dot) for dot in gm_dots])
         self.add(*gm_ln_colored)
 
-
-
-
         for i in range(len(gm_ln_cb)):
             self.play(Create(tx_program_parts[i]), Create(gm_ln_ini_color_lines[i]))
             tx_program_parts[i].generate_target()
-            tx_program_parts[i].target.next_to(gm_dots[i], DOWN, buff=.1)
-            self.play(MoveToTarget(tx_program_parts[i]), ReplacementTransform(gm_ln_ini_color_lines[i], gm_ln_cb[i]))
+            tx_program_parts[i].target.next_to(gm_dots[i], DOWN, buff=0.1)
+            self.play(
+                MoveToTarget(tx_program_parts[i]),
+                ReplacementTransform(gm_ln_ini_color_lines[i], gm_ln_cb[i]),
+            )
             self.add(gm_ln_cb[i])
 
         for i in range(len(tx_program_parts)):
-            tx_program_parts[i].add_updater(lambda _, i=i: tx_program_parts[i].next_to(gm_dots[i], DOWN, buff=.1))
+            tx_program_parts[i].add_updater(
+                lambda _, i=i: tx_program_parts[i].next_to(gm_dots[i], DOWN, buff=0.1)
+            )
 
         self.next_section()
 
-        vlt_program_lifetime = ValueTracker(gm_ln_ogs[0].get_start()[0]-.5)
-        
+        vlt_program_lifetime = ValueTracker(gm_ln_ogs[0].get_start()[0] - 0.5)
+
         for i in range(len(gm_dots)):
             gm_dots[i].add_updater(
-                    lambda _, i=i: 
-                        mv_dot(gm_dots[i], gm_ln_ogs[i], vlt_program_lifetime)
-                )
-        
+                lambda _, i=i: mv_dot(gm_dots[i], gm_ln_ogs[i], vlt_program_lifetime)
+            )
+
         gm_ln_dh = always_redraw(
-            lambda:
-                DashedLine(
-                    start=[vlt_program_lifetime.get_value(), 5, 0], 
-                    end=[vlt_program_lifetime.get_value(), -5, 0], 
-                    stroke_width=10,
-                    dash_length=.3,
-                    dashed_ratio=.5,
-                    color=GREEN
-                ).set_opacity(.7)
+            lambda: DashedLine(
+                start=[vlt_program_lifetime.get_value(), 5, 0],
+                end=[vlt_program_lifetime.get_value(), -5, 0],
+                stroke_width=10,
+                dash_length=0.3,
+                dashed_ratio=0.5,
+                color=GREEN,
+            ).set_opacity(0.7)
         )
         self.play(Write(gm_ln_dh), run_time=1)
-        #set opacity
+        # set opacity
         for i in range(len(gm_dots)):
             gm_ln_cb[i].add_updater(
-                lambda _, i=i:
-                    hp_set_opacity(gm_ln_cb[i], gm_ln_ogs[i], vlt_program_lifetime)
+                lambda _, i=i: hp_set_opacity(
+                    gm_ln_cb[i], gm_ln_ogs[i], vlt_program_lifetime
+                )
             )
 
             gm_dots[i].add_updater(
-                lambda _, i=i:
-                    hp_set_opacity(gm_dots[i], gm_ln_ogs[i], vlt_program_lifetime)
+                lambda _, i=i: hp_set_opacity(
+                    gm_dots[i], gm_ln_ogs[i], vlt_program_lifetime
+                )
             )
             gm_ln_colored[i].add_updater(
-                lambda _, i=i:
-                    hp_set_opacity(gm_ln_colored[i], gm_ln_ogs[i], vlt_program_lifetime)
+                lambda _, i=i: hp_set_opacity(
+                    gm_ln_colored[i], gm_ln_ogs[i], vlt_program_lifetime
+                )
             )
             tx_program_parts[i].add_updater(
-                lambda _, i=i:
-                    hp_set_opacity(tx_program_parts[i], gm_ln_ogs[i], vlt_program_lifetime)
+                lambda _, i=i: hp_set_opacity(
+                    tx_program_parts[i], gm_ln_ogs[i], vlt_program_lifetime
+                )
             )
             gm_ln_ogs[i].add_updater(
-                lambda _, i=i:
-                    hp_set_opacity(gm_ln_ogs[i], gm_ln_ogs[i], vlt_program_lifetime)
+                lambda _, i=i: hp_set_opacity(
+                    gm_ln_ogs[i], gm_ln_ogs[i], vlt_program_lifetime
+                )
             )
 
-        
-
-        self.play(vlt_program_lifetime.animate.set_value(10), run_time=14,rate_func=linear)
+        self.play(
+            vlt_program_lifetime.animate.set_value(10), run_time=14, rate_func=linear
+        )
         self.wait(2)
 
 
-    
-
-    
-
-import random
 def hola(start, end, color):
     return Line(start=start, end=end, color=color)
 
+
 class Test(Scene):
-        
     def construct(self):
         num = 5
         color_palette = [BLUE, RED, PURPLE, YELLOW_E, ORANGE]
-        names= ['BLUE', 'RED', 'PURPLE', 'YELLOW_E', 'ORANGE']
+        names = ["BLUE", "RED", "PURPLE", "YELLOW_E", "ORANGE"]
         vt = ValueTracker(-5)
 
-        gm_dots = [Dot([-5, 2-i, 0], color=color_palette[i]) for i in range(num)]
-        
+        gm_dots = [Dot([-5, 2 - i, 0], color=color_palette[i]) for i in range(num)]
 
-        speed = [.35, .4, .01, .6, .21]
+        speed = [0.35, 0.4, 0.01, 0.6, 0.21]
         for i in range(len(gm_dots)):
-            gm_dots[i].add_updater(lambda dot=gm_dots[i], i=i: move(dot, speed[i], names[i]))
-        
-
+            gm_dots[i].add_updater(
+                lambda dot=gm_dots[i], i=i: move(dot, speed[i], names[i])
+            )
 
         self.add(*gm_dots)
         gm_lines = [
             always_redraw(
-                lambda i=i:
-                hola([-5, 2-i, 0], gm_dots[i].get_center(), color_palette[i])
-            ) for i in range(num)
+                lambda i=i: hola(
+                    [-5, 2 - i, 0], gm_dots[i].get_center(), color_palette[i]
+                )
+            )
+            for i in range(num)
         ]
-        
-        
+
         self.add(*gm_lines)
 
-        self.play(vt.animate.set_value(5), run_time=5 )
+        self.play(vt.animate.set_value(5), run_time=5)
 
-def rd_ln_col(st, end, col ):
-    return Line(start=st, end=end, stroke_width=7, color=col )
+
+def rd_ln_col(st, end, col):
+    return Line(start=st, end=end, stroke_width=7, color=col)
+
 
 def mv_dot(dot: Dot, og_line: Line, vt: ValueTracker):
     st = og_line.get_start()[0]
     end = og_line.get_end()[0]
-    cur = vt.get_value() 
+    cur = vt.get_value()
     if st <= cur < end:
         dot.set_x(cur)
 
@@ -448,70 +488,69 @@ def set_opacityP(dot: Dot, og_line: Line, obj: VMobject, vt: ValueTracker):
     if st <= val <= end:
         obj.set_opacity(1)
     else:
-        obj.set_opacity(.2)
-            
+        obj.set_opacity(0.2)
+
 
 class Test3(Scene):
     def construct(self):
         num = 5
         color_palette = [BLUE, RED, PURPLE, YELLOW_E, ORANGE]
-        names= ['BLUE', 'RED', 'PURPLE', 'YELLOW_E', 'ORANGE']
+        names = ["BLUE", "RED", "PURPLE", "YELLOW_E", "ORANGE"]
         vt = ValueTracker(-5)
         gm_ln_dh = always_redraw(
-            lambda:
-                DashedLine(
-                    start=[vt.get_value(), 5, 0], 
-                    end=[vt.get_value(), -5, 0], 
-                    stroke_width=10,
-                    dash_length=.3,
-                    dashed_ratio=.5,
-                    color=GREEN
-                ).set_opacity(.7)
+            lambda: DashedLine(
+                start=[vt.get_value(), 5, 0],
+                end=[vt.get_value(), -5, 0],
+                stroke_width=10,
+                dash_length=0.3,
+                dashed_ratio=0.5,
+                color=GREEN,
+            ).set_opacity(0.7)
         )
         rnd_start = [-4, -2, -1.3, -5, -3]
         rnd = [1, 5, 2.6, 4.5, 3]
         gm_ln_og = [
-            Line(start=[rnd_start[i], 2-i, 0], end=[rnd[i], 2-i, 0], stroke_width=7).set_opacity(.2)
+            Line(
+                start=[rnd_start[i], 2 - i, 0], end=[rnd[i], 2 - i, 0], stroke_width=7
+            ).set_opacity(0.2)
             for i in range(num)
         ]
         gm_dots = [
-            Dot([rnd_start[i], 2-i, 0], color=color_palette[i], radius=.15)
+            Dot([rnd_start[i], 2 - i, 0], color=color_palette[i], radius=0.15)
             for i in range(num)
         ]
         gm_ln_colors = [
-            always_redraw(lambda i = i:
-                rd_ln_col([rnd_start[i], 2-i, 0], gm_dots[i].get_center(), color_palette[i])
+            always_redraw(
+                lambda i=i: rd_ln_col(
+                    [rnd_start[i], 2 - i, 0], gm_dots[i].get_center(), color_palette[i]
+                )
             )
             for i in range(num)
         ]
 
-        
+        # ss
         self.add(*gm_ln_colors)
         self.play(
             *[Create(line, run_time=4) for line in gm_ln_og],
-            Succession(
-                *[Write(dot) for dot in gm_dots],
-                run_time=2
-            ),
+            Succession(*[Write(dot) for dot in gm_dots], run_time=2),
         )
-        self.wait(.7)
+        self.wait(0.7)
 
+        # rs
         self.play(Write(gm_ln_dh, run_time=1.5))
 
         for i in range(num):
+            gm_dots[i].add_updater(lambda _, i=i: mv_dot(gm_dots[i], gm_ln_og[i], vt))
+            # opacity
             gm_dots[i].add_updater(
-                lambda _, i=i:
-                    mv_dot(gm_dots[i], gm_ln_og[i], vt)
-            )
-            #opacity
-            gm_dots[i].add_updater(
-                lambda _, i=i:
-                    set_opacityP(gm_dots[i], gm_ln_og[i], gm_dots[i], vt)
+                lambda _, i=i: set_opacityP(gm_dots[i], gm_ln_og[i], gm_dots[i], vt)
             )
 
             gm_ln_colors[i].add_updater(
-                lambda _, i=i:
-                    set_opacityP(gm_dots[i], gm_ln_og[i], gm_ln_colors[i], vt)
+                lambda _, i=i: set_opacityP(
+                    gm_dots[i], gm_ln_og[i], gm_ln_colors[i], vt
+                )
             )
+        # ss
 
         self.play(vt.animate.set_value(6), run_time=6, rate_func=linear)

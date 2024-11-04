@@ -1,0 +1,18 @@
+Ahora pongamos un ejercicio de practica.
+En matematicas, el plano cartesiano esta dividdo pr el eje de ordanada y el eje
+de la abicisa. Esta division genera secciones que llamamos cuadrantes y como el
+nombre lo dice, consta de 4 secciones
+
+El primer cuadrante solo abarca los numeros positivos en ambos ejes
+El segund cuadrante abarca los numeros negativos y positivos en x
+El tercer cuadrante abarca los numeros negativos en ambos ejes
+Y el cuarto cuadrante los positivos en x y negativos en y
+
+Intenta hacer un programa que dadas dos coordenadas x,y se imprima en que
+cuadrante est'a. Puedes usar las condiciones que se ven en la parte derecha para
+ayudarte
+
+En el proximo video vamos a ver la solucion y ademas, lo vamos a agregar a una
+funcion. Veremos que es una funcion y por que es muy util usarlas.
+
+y gracias por ver el video

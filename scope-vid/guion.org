@@ -1,0 +1,154 @@
+Hola,  En esta serie de videos vamos a usar p5js, una herramienta open source, que sirve para crear arte y en esta ocasion la usaremos tambien para aprender a programar
+En este video vamos a ver una introducción básica a conceptos de programación, para poder hacer cualquier tipo d       e visualización, puede ser artistica o una simulacion de un fenomeno fisico.
+
+Primero vamos a definir que es progqueramar. aaaa
+Programar es simplemente crear una serie de instrucciones para que la computadora ejecutelo. Dicho de otra forma es un  algoritmo y  hay muchos algoritmos para una infinidad de palciaciones, pero por ahora solo hay que recordar que programar es darle instrucciones a la computadora para que ejecute.
+         
+
+Ahora vamos a pasar a un ejemplo
+Por poner un ejemplo, si quisiéramos que un perrito llegará de un punto A a un punto B,  podemos decirle “Camina del punto A al punto B ya son instrucciones, ya es un algoritmos. Obviamente depende del contexto del prog      rama que tan especificos tenemos que ser.
+ Siguiendo ese mismo ejemplo podemos decir:
+(Hacer dibujos en la tablet)          
+Hay un perrito en el punto A = (2, 3) as y queremos que llegue al punto B = (4, 6), entonces nuestras instrucciones podrian ser “Camina 2 pasos en x y luego 3 pasos en Y” o podria ser “Camina 3 pasos en y y 2 en X” y tambi’en funcionaria. Como podemos ver,  hay muchos posibles algoritmos para obtener un mismo resultado.
+
+Ahora pasemos a conceptos mas particulares de lo que nos importa, vamos a programar de verdad. En esta serie de videos vamos a usar p5js, p5js cual usa el lenguaje de programacion JavaScript, que no me gusta, pero podemos crear cosas muy padres con el. 
+
+
+
+
+Ya en OBS EN LA COMPU ir a p5js y crear una nueva. decir que vamos a ignorar el draw en esta ocasion.
+Overview de la memoria de una computadora y como guarda informacion
+Variables:
+int, float
+string
+print
+
+cambiar variables
+condicionales(if) y tablas de verdad
+and &&
+or ||
+<  
+> 
+<=
+>=
+for
+arreglo
+while
+el for es un while
+—-----------------------------------------------------------------------
+
+Funciones y scope
+¿Que es una función?
+Una función es un bloque de código que ejecuta una serie de intrucciones, y
+ademas las podemos ejecutar las veces que queramos. 
+
+En este caso tenemos la funcion transformarAcuadrado(). Algo muy bonito de las
+funciones es que podemos crearlas, olvidarnos de como funcionan y alcanzar un
+nuevo grado de abstraccion. Entonces, al usarla solo sabemos que va a
+transformar nuestro triangulo en un cuadrado y no nos preocupamos por el resto
+
+Para poder ejecutar una función la “invocamos” o 
+“llamamos”, se hace poniendo el nombre de la función y unos paréntesis
+
+Cuando la llamamos se hace la operacion . 
+A los valores de entrada, en este caso el triangulo, les llamamos 
+input
+y a los de salida , el cuadrado, le llamamos output
+
+Además la función puede tener parámetros, los cuales son el input, 
+en este caso el valor de entrada sería el triangulo
+
+Pero también puede no tenerlos, por ejemplo la función dameUno() puede simplemente darnos un 1
+
+
+Veamos otro ejemplo
+
+Ahora definamos la funcion suma dos numeros. Con dos parametros: x & y. Ahora,
+si le pasamos 2 argumentos y llamaos a la funcion, vemos que la funcion se
+comporta de la manera esperada. 
+
+function imprimeHola()
+function  sumaUno(a)
+function suma(a,b)
+function  primos(n)
+function  alcuadrado(n)
+
+
+Ahora vamos a hablar de que es el scope o alcance de una variable, pero antes vamos a recordar algo:
+Recordemos que el código que escribimos se ejecuta de manera secuencial, es decir, una instrucción se ejecuta una después de la otra y solo hasta que la anterior haya acabado.
+
+¿Qué es el scope o ámbito(aunque me gusta más pensarlo como el alcance)?
+El scope determina qué partes del programa pueden ser usadas, cuando podemos definir o redefinir una variable sin que haya conflictos. El scope de cada variable se define mediante bloques de código(generalmente delimitados por {} o indentación(python) y ahí podemos definir que hay:
+Variables globales que son declaradas fuera de cada bloque de código
+Variables locales que son declaradas dentro de un bloque de código
+Podemos resumir las siguientes reglas para el scope de variables:
+Si una variable es declarada dentro de un bloque (método/función/procedimiento), esta será válida sólo dentro de ese bloque y se destruirá al terminar el bloque
+La variable no podrá verse ni usarse fuera del bloque (en el exterior del bloque). 
+Las variables locales local y solo tiene alcance dentro del bloque que se creó y sus bloques hijos, pero no en bloques hermanos ni padres
+variable global y cualquier bloque puede acceder a ella y modificarla.
+
+Pasemos a ejemplos prácticos:
+
+let soyGlobal;
+function setup() {
+  let y = 2;
+  let x;
+  soyGlobal = "Soy global";
+  {
+    x = 1;
+    print(y);
+    print(soyGlobal);
+  }
+  print(x);
+  print(soyGlobal);
+}
+
+Gráficas  computacionales(video)
+pixeles
+rgb
+fotos
+videos
+game loop
+setup
+update
+En    p5js
+
+Ya hablamos mucho de programación, pero ahora es necesario hablar un poco de teoría de gráficas computacionales. 
+
+¿Cómo se muestran imágenes en la computadora?
+
+
+Cómo es que una imagen se mueve?
+
+Una vez que ya hablamos del scope y de que es una función podemos empezar con p5js propiamente, pero antes vamos a intentar entender cómo funciona p5js
+
+Que es el canvas?
+el canvas es un rectángulo con dimensiones width, y height con coordenadas …
+—------------------------------------x—---------------------------->
+|
+|
+|
+|
+y
+|
+|
+|
+Entonces si especificamos …, podemos ir a la coordenada y si especificamos… podemos estar en …
+
+La ilusión de movimiento
+Cómo es que una pantalla nos muestra movim
+
+
+Ahora, viendo la parte de código y creando un nuevo template nos aparece esto. De momento vamos a ignorar el draw, pero podemos ver que setup y drawn funciones.
+
+
+
+ En general, cualquier juego y/o simulacion funcionan igual que las dos funciones que estamos viendo. En el setup hacemos los preparativos necesarios para lo que usaremos en el draw y se manda a llamar una unica vez antes de cualquier cosa.
+El draw se llama 1 vez por cada frame
+en createCanvas(width, height);
+podemos ver que no se ve nada, para eso debemos especificar el color
+Por el momento vamos a ver que definimos los colores en RGB que va del 0 al 255 ya que es una representación de usa 8 bits, 8 por cada canal, por lo que cual tenemos acceso a 255 * 255 * 255 posibles colores únicos.
+Ahora si p5js propiamente
+con el circulito que se mueve
+
+

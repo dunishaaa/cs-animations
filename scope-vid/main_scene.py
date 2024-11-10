@@ -5,6 +5,16 @@
 from manim import *
 
 
+class TruIntro(Scene):
+    def construct(self):
+        tx_saludo = Text("Hola...").scale(2)
+        tx_saludo.generate_target()
+        tx_saludo.target.to_edge(UP, buff=1.0)
+        self.play(Write(tx_saludo))
+        self.play(MoveToTarget(tx_saludo))
+        self.wait(20)
+
+
 class Intro(Scene):
     def construct(self):
         # ss
@@ -14,27 +24,33 @@ class Intro(Scene):
         tx_que_funcion.generate_target()
         tx_que_funcion.target.to_edge(UP)
         tx_expl_funcion = (
-            Tex("Una función es un bloque de código que realiza alguna operación")
+            Tex(
+                "Una función es un bloque de código ejecuta una serie de"
+                " instrucciones."
+            )
             .scale(0.8)
             .next_to(tx_que_funcion.target, DOWN, buff=0.5)
         )
         self.play(MoveToTarget(tx_que_funcion))
-        self.play(Write(tx_expl_funcion))
+        self.play(Write(tx_expl_funcion), run_time=3)
+        self.wait(5)
 
         # podemos tener la funcion trianguloPorCuadrado
 
         gm_arr_0 = Arrow().scale(2).next_to(tx_que_funcion, DOWN, buff=2)
-        gm_tr_0 = Triangle(color=BLUE).scale(1.2).next_to(gm_arr_0, LEFT, buff=0.5)
+        gm_tr_0 = Triangle(color=PURPLE).scale(1.2).next_to(gm_arr_0, LEFT, buff=0.5)
         tx_fn_tpc = (
             Text("transformarACuadrado")
             .scale(0.7)
             .next_to(tx_expl_funcion, DOWN, buff=0.1)
         )
+
         tx_fn_tpc_p = (
-            Text("transformarAcuadrado()", t2c={"(": RED, ")": RED})
+            Text("transformarACuadrado()", t2c={"(": RED, ")": RED})
             .scale(0.35)
             .next_to(gm_arr_0, UP, buff=0.1)
         )
+
         tx_fn_tpc_ps = (
             Text(
                 "transformarAcuadrado(triangulo)",
@@ -44,17 +60,67 @@ class Intro(Scene):
             .scale(0.32)
             .next_to(gm_arr_0, UP, buff=0.1)
         )
-        gm_sq_0 = Square(color=BLUE).scale(0.8).next_to(gm_arr_0, RIGHT, buff=0.5)
+        gm_sq_0 = Square(color=ORANGE).scale(0.8).next_to(gm_arr_0, RIGHT, buff=0.5)
 
-        self.play(Create(gm_tr_0))
-        self.play(Write(gm_arr_0))
-        self.play(Create(tx_fn_tpc))
+        del_gp_0 = VGroup(tx_que_funcion, tx_expl_funcion)
+        self.play(FadeOut(del_gp_0, run_time=0.5))
+
+        self.play(Create(tx_fn_tpc), run_time=1.7)
+
+        wv = 11
+        self.play(
+            ApplyWave(
+                tx_fn_tpc,
+                ripples=wv,
+                time_width=wv * 0.7,
+                run_time=wv + 3,
+                rate_func=linear,
+            )
+        )
+        self.wait(1)
         self.play(Transform(tx_fn_tpc, tx_fn_tpc_p))
+        self.wait(3)
         self.play(FocusOn(tx_fn_tpc_p[-2:]))
+        self.wait(1)
+        self.play(Write(gm_arr_0))
+        self.play(Create(gm_tr_0))
+        self.wait(2)
+        self.play(
+            Indicate(tx_fn_tpc, scale_factor=1.2, run_time=1),
+        )
+
+        gm_tr_0.save_state()
+
+        self.play(Transform(gm_tr_0, gm_sq_0), run_time=1.5)
+        self.wait(1)
+        self.play(Restore(gm_tr_0), run_time=1.5)
+
+        tx_in = (
+            Text("input", slant=ITALIC, color=PURPLE)
+            .scale(0.7)
+            .next_to(gm_tr_0, UP, buff=0.5)
+        )
+        tx_out = (
+            Text("output", slant=ITALIC, color=ORANGE)
+            .scale(0.7)
+            .next_to(gm_sq_0, UP, buff=0.5)
+        )
+        self.play(Indicate(gm_tr_0))
+        self.play(Write(tx_in))
+        self.wait(2.3)
+        self.play(Transform(gm_tr_0, gm_sq_0), run_time=1.5)
+        self.play(Indicate(gm_sq_0))
+        self.play(Write(tx_out))
+        self.wait(2.3)
+
+        self.play(tx_out.animate.set_opacity(0.7), tx_in.animate.set_opacity(0.7))
+
+        # rs
+        self.play(Restore(gm_tr_0), FadeOut(gm_sq_0), run_time=1)
+        self.wait(1)
 
         tr_gb_0 = Triangle(color=BLACK).scale(1.2).next_to(gm_arr_0, LEFT, buff=0.5)
 
-        del_gp_0 = VGroup(tx_que_funcion, tx_expl_funcion)
         tx_fn_con_params = (
             Text("Con parámetros", color=BLUE_E)
             .scale(0.8)
@@ -63,20 +129,28 @@ class Intro(Scene):
         gp_funcion = VGroup(gm_arr_0, tr_gb_0, tx_fn_tpc_ps, gm_sq_0)
         box_params = SurroundingRectangle(gp_funcion, color=BLUE_E, buff=0.2)
         self.play(
-            FadeOut(del_gp_0, run_time=0.2),
             FadeOut(tx_fn_tpc),
-            FadeOut(tx_fn_tpc_p),
+            FadeOut(tx_fn_tpc_p, run_time=0.2),
             Write(box_params),
             Create(tx_fn_con_params),
         )
+        self.wait(4.5)
         gm_arr_param = CurvedArrow(
             tx_fn_con_params[-10:].get_center(),
             tx_fn_tpc_ps[-6:].get_center(),
             radius=10,
             color=BLUE_C,
         ).scale(0.7)
-        self.play(Create(gm_arr_param), Write(tx_fn_tpc_ps), run_time=0.5)
-        self.play(Transform(gm_tr_0, gm_sq_0))
+
+        self.play(
+            Wiggle(gm_tr_0), Create(gm_arr_param), Write(tx_fn_tpc_ps), run_time=0.8
+        )
+        self.wait(0.5)
+        self.play(
+            Indicate(tx_fn_tpc_ps, scale_factor=1.7, run_time=0.8),
+        )
+        self.wait(0.5)
+        self.play(TransformFromCopy(gm_tr_0, gm_sq_0))
 
         tx_fn_sin_params = (
             Text("Sin parámetros", color=GREEN_E)
@@ -89,7 +163,7 @@ class Intro(Scene):
             .scale(0.4)
             .next_to(gm_arr_1, UP, buff=0.1)
         )
-        tx_uno = Text("1", color="BLUE").move_to(gm_arr_1.get_center())
+        tx_uno = Text("1", color=ORANGE).move_to(gm_arr_1.get_center())
         tx_uno.generate_target()
         tx_uno.target.next_to(gm_arr_1, RIGHT, buff=1)
 
@@ -105,6 +179,7 @@ class Intro(Scene):
         self.play(Create(gm_arr_1), Create(tx_fn_sU))
         self.play(Write(tx_uno))
         self.play(MoveToTarget(tx_uno))
+        # ss
 
         self.play(
             FadeOut(gp_funcion_sin_params),
@@ -114,10 +189,10 @@ class Intro(Scene):
             FadeOut(tx_fn_sin_params),
             FadeOut(tx_fn_con_params),
             FadeOut(gm_arr_param),
-            run_time=0.2,
+            run_time=0.7,
         )
         self.clear()
-        self.wait()
+        self.wait(4)
 
 
 class MasEjemplosFunciones(Scene):
@@ -129,6 +204,7 @@ class MasEjemplosFunciones(Scene):
             .scale(1.4)
             .to_corner(UP)
         )
+
         self.play(Write(tx_title))
         tx_fn_suma = Text(
             "sumaDosNumeros(x, y)",
@@ -149,7 +225,9 @@ class MasEjemplosFunciones(Scene):
         box_fn = SurroundingRectangle(tx_fn_suma, color=YELLOW_E, buff=0.3)
         listing.next_to(box_fn, DOWN, buff=1)
         self.play(Write(tx_fn_suma), Write(box_fn))
+        self.wait(10)
         self.play(Create(listing), run_time=1)
+        self.wait(10)
         gm_arr_0 = (
             Arrow(color=BLUE).scale(0.7).next_to(box_fn.get_corner(UL), LEFT, buff=0.3)
         )
@@ -158,10 +236,13 @@ class MasEjemplosFunciones(Scene):
         )
         tx_x = Tex("4", color=BLUE).next_to(gm_arr_0, LEFT, buff=0.5)
         tx_y = Tex("5", color=RED).next_to(gm_arr_1, LEFT, buff=0.5)
+
         self.play(Create(gm_arr_0), Create(gm_arr_1))
+
         self.play(Write(tx_x), Write(tx_y))
+
         tx_op_fn = Text(
-            "4 + 5 = 9", t2c={"4": BLUE, "5": RED, "9": YELLOW_E}, font_size=25
+            "4 + 5 = 9", t2c={"4": BLUE, "5": RED, "9": ORANGE}, font_size=25
         ).move_to(tx_fn_suma.get_center())
         gp_nums = VGroup(tx_x, tx_y)
         copy_nums = gp_nums.copy()
@@ -169,9 +250,10 @@ class MasEjemplosFunciones(Scene):
             Create(copy_nums, run_time=0.1),
             FadeOut(tx_fn_suma),
             Transform(gp_nums, tx_op_fn),
+            run_time=1.5,
         )
-        self.wait(0.5)
-        gm_arr_2 = Arrow(color=YELLOW_E).scale(0.7).next_to(box_fn, RIGHT, buff=0.3)
+        self.wait(1.0)
+        gm_arr_2 = Arrow(color=ORANGE).scale(0.7).next_to(box_fn, RIGHT, buff=0.3)
         tx_res_fn = Text("9", color=YELLOW_E).next_to(gm_arr_2, RIGHT, buff=0.5)
         self.play(
             FadeOut(gp_nums),
@@ -180,6 +262,8 @@ class MasEjemplosFunciones(Scene):
             Write(gm_arr_2),
             run_time=2,
         )
+
+        self.wait(3)
 
 
 def mv_dot(dot: Dot, og_line: Line, vlt: ValueTracker):

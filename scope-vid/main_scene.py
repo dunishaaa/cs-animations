@@ -2,6 +2,8 @@
 #                   Create, FocusOn, Scene, Tex, Transform, Triangle, VGroup,
 #                   Write)
 
+from math import log
+
 from manim import *
 
 
@@ -518,123 +520,156 @@ class Scope(Scene):
         self.wait(2)
 
 
-def hola(start, end, color):
-    return Line(start=start, end=end, color=color)
-
-
-class Test(Scene):
+class ForExam(Scene):
     def construct(self):
-        num = 5
-        color_palette = [BLUE, RED, PURPLE, YELLOW_E, ORANGE]
-        names = ["BLUE", "RED", "PURPLE", "YELLOW_E", "ORANGE"]
-        vt = ValueTracker(-5)
-
-        gm_dots = [Dot([-5, 2 - i, 0], color=color_palette[i]) for i in range(num)]
-
-        speed = [0.35, 0.4, 0.01, 0.6, 0.21]
-        for i in range(len(gm_dots)):
-            gm_dots[i].add_updater(
-                lambda dot=gm_dots[i], i=i: move(dot, speed[i], names[i])
-            )
-
-        self.add(*gm_dots)
-        gm_lines = [
-            always_redraw(
-                lambda i=i: hola(
-                    [-5, 2 - i, 0], gm_dots[i].get_center(), color_palette[i]
-                )
-            )
-            for i in range(num)
-        ]
-
-        self.add(*gm_lines)
-
-        self.play(vt.animate.set_value(5), run_time=5)
-
-
-def rd_ln_col(st, end, col):
-    return Line(start=st, end=end, stroke_width=7, color=col)
-
-
-def mv_dot(dot: Dot, og_line: Line, vt: ValueTracker):
-    st = og_line.get_start()[0]
-    end = og_line.get_end()[0]
-    cur = vt.get_value()
-    if st <= cur < end:
-        dot.set_x(cur)
-
-
-def set_opacityP(dot: Dot, og_line: Line, obj: VMobject, vt: ValueTracker):
-    st = og_line.get_start()[0]
-    end = og_line.get_end()[0]
-    cur = dot.get_center()[0]
-    val = vt.get_value()
-    if st <= val <= end:
-        obj.set_opacity(1)
-    else:
-        obj.set_opacity(0.2)
-
-
-class Test3(Scene):
-    def construct(self):
-        num = 5
-        color_palette = [BLUE, RED, PURPLE, YELLOW_E, ORANGE]
-        names = ["BLUE", "RED", "PURPLE", "YELLOW_E", "ORANGE"]
-        vt = ValueTracker(-5)
-        gm_ln_dh = always_redraw(
-            lambda: DashedLine(
-                start=[vt.get_value(), 5, 0],
-                end=[vt.get_value(), -5, 0],
-                stroke_width=10,
-                dash_length=0.3,
-                dashed_ratio=0.5,
-                color=GREEN,
-            ).set_opacity(0.7)
-        )
-        rnd_start = [-4, -2, -1.3, -5, -3]
-        rnd = [1, 5, 2.6, 4.5, 3]
-        gm_ln_og = [
-            Line(
-                start=[rnd_start[i], 2 - i, 0], end=[rnd[i], 2 - i, 0], stroke_width=7
-            ).set_opacity(0.2)
-            for i in range(num)
-        ]
-        gm_dots = [
-            Dot([rnd_start[i], 2 - i, 0], color=color_palette[i], radius=0.15)
-            for i in range(num)
-        ]
-        gm_ln_colors = [
-            always_redraw(
-                lambda i=i: rd_ln_col(
-                    [rnd_start[i], 2 - i, 0], gm_dots[i].get_center(), color_palette[i]
-                )
-            )
-            for i in range(num)
-        ]
-
+        tx_title_for = Tex("Ciclos").scale(2).generate_target()
         # ss
-        self.add(*gm_ln_colors)
-        self.play(
-            *[Create(line, run_time=4) for line in gm_ln_og],
-            Succession(*[Write(dot) for dot in gm_dots], run_time=2),
+        self.play(Write(tx_title_for))
+        self.play(Unwrite(tx_title_for))
+
+        tx_ejemplo = Tex("Un ejemplo...").scale(2)
+        tx_ejemplo.generate_target()
+        tx_ejemplo.target.scale(0.5).to_corner(UL, buff=0.8)
+        self.play(Write(tx_ejemplo))
+        self.play(MoveToTarget(tx_ejemplo))
+
+        tx_ti_algo = Tex(
+            r"""
+            \underline{\textbf{Algoritmo}}
+            """,
+            font_size=40,
         )
-        self.wait(0.7)
+
+        tx_fst_algo = Tex(
+            r"""
+            \begin{enumerate} 
+                \setlength{\itemsep}{0.1cm}
+                \item Definir $x = 0$
+                \item Definir $x = 1 + x$
+                \item Definir $x = 1 + x$
+                \item Definir $x = 1 + x$
+                \item Definir $x = 1 + x$
+                \item Definir $x = 1 + x$
+                \item Imprimir $x$
+            \end{enumerate}
+            """,
+            font_size=22,
+        )
+
+        head_algo_worst = r"""
+            \begin{enumerate} 
+                \setlength{\itemsep}{0.1cm}
+                \item Definir $x = 0$
+                \item Definir $x = 1 + x$
+                \item Definir $x = 1 + x$
+                \item Definir $x = 1 + x$
+                \item Definir $x = 1 + x$
+                \item Definir $x = 1 + x$"""
+
+        tail_algo_worst = r"""      \item Imprimir $x$
+            \end{enumerate}
+            """
+
+        definir_x_1 = r"""
+                \item Definir $x = 1 + x$"""
+
+        prev_algo = Tex(
+            head_algo_worst + tail_algo_worst,
+            font_size=22,
+        )
+
+        vg_algo = VGroup(tx_ti_algo, tx_fst_algo).arrange(DOWN, buff=0.3)
+        vg_algo.generate_target()
+
+        pl = NumberPlane().add_coordinates()
+        # self.add(pl)
 
         # rs
-        self.play(Write(gm_ln_dh, run_time=1.5))
+        self.play(Write(vg_algo), run_time=6)
 
-        for i in range(num):
-            gm_dots[i].add_updater(lambda _, i=i: mv_dot(gm_dots[i], gm_ln_og[i], vt))
-            # opacity
-            gm_dots[i].add_updater(
-                lambda _, i=i: set_opacityP(gm_dots[i], gm_ln_og[i], gm_dots[i], vt)
-            )
+        vg_algo -= tx_fst_algo
+        prev_algo.next_to(tx_ti_algo, DOWN, buff=0.3)
 
-            gm_ln_colors[i].add_updater(
-                lambda _, i=i: set_opacityP(
-                    gm_dots[i], gm_ln_og[i], gm_ln_colors[i], vt
+        self.play(Transform(tx_fst_algo, prev_algo))
+
+        rn_time = [2, 2, 1.5, 1.0, 0.5, 0.4, 0.3, 0.1]
+        wait_time = [1, 1, 0.8, 0.5, 0.4, 0.3, 0.3, 0.07]
+        sc = [max(min(10, x) / 10, 0.5) for x in range(20, 0, -1)]
+
+        vt_n = ValueTracker(7)
+
+        tx_n_pasos = always_redraw(
+            lambda: Text(f"# Pasos {int(vt_n.get_value())}", color=BLUE)
+            .scale(0.4)
+            .next_to(tx_ti_algo, UP, buff=0.1)
+        )
+
+        self.play(Write(tx_n_pasos))
+
+        self.remove(tx_fst_algo)
+        for i in range(20):
+            head_algo_worst += definir_x_1
+            vt_n.set_value(vt_n.get_value() + 1)
+
+            new_algo = (
+                Tex(
+                    head_algo_worst + tail_algo_worst,
+                    font_size=22,
                 )
+                .scale(sc[i])
+                .next_to(tx_ti_algo, DOWN, buff=0.3)
             )
-        # ss
 
-        self.play(vt.animate.set_value(6), run_time=6, rate_func=linear)
+            if i >= 7:
+                self.play(FadeTransform(prev_algo, new_algo), run_time=rn_time[7])
+                self.wait(wait_time[7])
+            else:
+                self.play(FadeTransform(prev_algo, new_algo), run_time=rn_time[i])
+                self.wait(wait_time[i])
+
+            self.remove(prev_algo)
+            prev_algo = new_algo
+
+        vg_algo += prev_algo
+
+        self.play(FadeOut(tx_n_pasos))
+
+        self.play(vg_algo.animate.shift(LEFT * 2))
+
+        # ss
+        tx_ti_algo_mej = (
+            Tex(
+                r"""
+            \underline{\textbf{Algoritmo Mejorado}}
+            """,
+                font_size=40,
+            )
+            .move_to(tx_ti_algo.get_center())
+            .shift(RIGHT * 4)
+        )
+        self.play(Write(tx_ti_algo_mej))
+
+        tx_fst_algo_mej = Tex(
+            r"""
+            \begin{enumerate} 
+                \setlength{\itemsep}{0.1cm}
+                \item Definir $x = 0$
+                \item Repetir paso 3 por 100 veces 
+                \item Definir $x = 1 + x$
+                \item Imprimir $x$
+            \end{enumerate}
+            """,
+            font_size=22,
+        ).next_to(tx_ti_algo_mej, DOWN, buff=0.4)
+        self.play(Write(tx_fst_algo_mej))
+        self.wait()
+
+        vg_algo = vg_algo + tx_ejemplo + tx_fst_algo_mej + tx_ti_algo_mej
+
+        self.play(FadeOut(vg_algo), run_time=1.5)
+
+        tx_pero = Tex(r"""\textbf{Pero ¿por qué no simplemente...}  $x += 100$?""")
+
+        wv = 3
+        self.play(Write(tx_pero))
+        self.play(ApplyWave(tx_pero, ripples=wv, time_width=wv, run_time=wv))

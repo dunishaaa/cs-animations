@@ -1,3 +1,4 @@
+
 Hola,  En esta serie de videos vamos a usar p5js, una herramienta open source, que sirve para crear arte y en esta ocasion la usaremos tambien para aprender a programar
 En este video vamos a ver una introducción básica a conceptos de programación, para poder hacer cualquier tipo d       e visualización, puede ser artistica o una simulacion de un fenomeno fisico.
 
@@ -31,8 +32,54 @@ or ||
 > 
 <=
 >=
-for
+
+
+Los ciclos son de las herramientas m'as importantes de la programacion. Veamos el siguiente caso
+Pongamos de ejemplo el siguiente pseudo codigo
+1.- definir x = 0
+2.- definir x = 1 + x
+2.- definir x = 1 + x
+2.- definir x = 1 + x
+2.- definir x = 1 + x
+2.- definir x = 1 + x
+7.- imprimir x
+
+Ves el problema? que pasaria si quisieramos sumar 1 a x 100 veces? pondriamos suma 1 a x 100 veces? Por que no mejor
+hacemos esto
+
+1.- definir x = 0
+2.- repetir el paso 3 100 veces
+3.- definir x = 1 + x
+4.- imprimir x
+
+Alguien que este poniendo atencion pdora decir, por que no sumamos 0 + 5? Otra podra decir por que no x = 5*1?
+Y yo dire, tienes razon. Pero tenai que poner un ejemplo sencillo.
+
+El for
+
+
+*for* 
+El ciclo for se puede traducir como para. Pero es mas facil pensarlo como si dijeramos mientras que se cumpla esta condicion vas a
+jecutar estos pasos una y otra vez, como si dieramos vueltas en un ciruclo  repitiendo lo mismos pasos, por eso
+precisamente  le llamamos ciclo
+
+Pasamos al codigo.....
+
+ahora un ejemplo con arreglos
 arreglo
+
+Otro ciclo...
+El while, ahora si de verdad, se traduce como mientras que. La verdad es que el while y el for funcionan de la misma
+manera: mientras que esta condicion se cumpla repite estos pasos. Pero... para que hay dos formas de hacer lo mismo?
+Pues resulta que hay sintaxis que parecen mas naturales dependiendo de la circunstancia.
+
+Retomemos el caso del arreglo, y veamos que se puede imprimir de igual manera, pero no dirian que es mas comodo el for?
+La verdad es que el for es un while son practicamente iguales, y aqui se ve, pero con practica uno se va a ir acostumbrando a los dos.
+
+El for es mas especifico que el while y, justamente, esa es la diferencia. El for se usa para cosas que sabemos
+precisamente cuando van a acabar y el while para cosas que no necesariamente sabemos cuando van a acabar
+
+
 while
 el for es un while
 —-----------------------------------------------------------------------
@@ -63,9 +110,10 @@ Pero también puede no tenerlos, por ejemplo la función dameUno() puede simplem
 
 Veamos otro ejemplo
 
-Ahora definamos la funcion suma dos numeros. Con dos parametros: x & y. Ahora,
-si le pasamos 2 argumentos y llamaos a la funcion, vemos que la funcion se
+Ahora definamos la funcion suma dos numeros. Con dos parametros: x & y.
+Si le pasamos 2 argumentos y llamaos a la funcion, entonces vemos que la funcion se
 comporta de la manera esperada. 
+
 
 function imprimeHola()
 function  sumaUno(a)

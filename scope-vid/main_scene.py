@@ -2,7 +2,7 @@
 #                   Create, FocusOn, Scene, Tex, Transform, Triangle, VGroup,
 #                   Write)
 
-from math import log
+from math import log, sqrt
 
 from manim import *
 
@@ -520,7 +520,7 @@ class Scope(Scene):
         self.wait(2)
 
 
-class ForExam(Scene):
+class Ciclos(Scene):
     def construct(self):
         tx_title_for = Tex("Ciclos").scale(2).generate_target()
         # ss
@@ -630,6 +630,8 @@ class ForExam(Scene):
             self.remove(prev_algo)
             prev_algo = new_algo
 
+        self.play(vt_n.animate.set_value(100))
+
         vg_algo += prev_algo
 
         self.play(FadeOut(tx_n_pasos))
@@ -673,3 +675,180 @@ class ForExam(Scene):
         wv = 3
         self.play(Write(tx_pero))
         self.play(ApplyWave(tx_pero, ripples=wv, time_width=wv, run_time=wv))
+
+
+class LosCiclos(Scene):
+    def construct(self):
+        grid = NumberPlane().add_coordinates().set_opacity(0.3)
+        self.add(grid)
+        # ss
+        tx_ti_ciclos = Tex(
+            r"""\textbf{Ciclos usados en programación...}""", font_size=22
+        ).scale(2.7)
+        tx_for_while = (
+            Tex(
+                R"""
+                El for y el while son esencialmente lo mismo...
+                """,
+                tex_to_color_map={"while": GREEN, "for": BLUE},
+                font_size=22,
+            )
+            .scale(1.7)
+            .to_edge(UP, buff=0.3)
+        )
+
+        self.play(Write(tx_ti_ciclos))
+
+        self.play(Unwrite(tx_ti_ciclos), run_time=0.6)
+        self.play(FadeTransform(tx_ti_ciclos, tx_for_while))
+
+        gm_circle = Circle(radius=sqrt(2), stroke_color=GREY).set_stroke(opacity=0.4)
+
+        gm_arc = ArcBetweenPoints(
+            start=UR, end=UL, angle=-6 / 4 * PI, stroke_color=YELLOW
+        )
+        gm_dt_tip = Dot(UL, color=YELLOW)
+        gm_dt_tip.add_updater(lambda d: d.move_to(gm_arc.get_end()))
+
+        tx_haz_esto = Tex(
+            R"""
+            Haz algo...
+            """,
+            font_size=44,
+        ).next_to(tx_for_while, DOWN, buff=0.5)
+
+        tx_condition = Tex(
+            R"""
+            \textbf{\textit{condición}}
+            """,
+            font_size=27,
+            color=GREEN,
+        ).next_to(tx_for_while, DOWN, buff=0.5)
+
+        self.play(Write(tx_haz_esto))
+        self.wait(1)
+
+        self.play(
+            tx_haz_esto.animate.scale(0.7).move_to(ORIGIN).set_opacity(0.4),
+            Create(gm_circle),
+            run_time=1,
+        )
+        self.play(Write(tx_condition))
+        self.play(tx_condition.animate.move_to([0, 1.5, 0]))
+
+        for i in range(5):
+            self.play(Indicate(tx_condition), run_time=0.4)
+            gm_dt_tip.set_opacity(1)
+            gm_arc.set_stroke(opacity=1)
+            self.play(Create(gm_arc), tx_haz_esto.animate.set_opacity(1), run_time=1)
+            self.play(
+                tx_haz_esto.animate.set_opacity(0.4),
+                FadeOut(gm_dt_tip),
+                FadeOut(gm_arc),
+                run_time=0.5,
+            )
+
+        self.play(
+            Indicate(tx_condition, color=RED, run_time=0.7),
+        )
+        tx_condition.set_color(RED),
+        self.wait(2)
+        self.play(
+            FadeOut(tx_haz_esto, run_time=0.7),
+            FadeOut(gm_circle, run_time=0.7),
+            FadeOut(tx_condition, run_time=0.7),
+            FadeOut(tx_for_while, run_time=0.7),
+        )
+
+        tx_practico = Tex(
+            R"""
+            Ahora un ejemplo práctico
+            """
+        )
+
+        self.play(Write(tx_practico))
+        self.play(FadeOut(tx_practico))
+
+        tx_ejem_cond = Tex(
+            R"""
+            \textbf{$x > 100$}
+            """,
+            font_size=32,
+            color=GREEN,
+        ).move_to([0, 1.5, 0])
+
+        tx_init = Tex(
+            R"""
+            \textbf{Inicializa x = 0}
+            """,
+            font_size=30,
+        ).to_edge(LEFT, buff=1.0)
+
+        tx_imprime = Tex(
+            R"""
+            \textbf{Imprime x}
+            """,
+            font_size=30,
+        ).to_edge(RIGHT, buff=1.0)
+
+        tx_x_mas = Tex(
+            R"""
+            \textbf{x = x + 1}
+            """,
+            font_size=32,
+        )
+
+        self.play(
+            Write(tx_init),
+            Write(tx_x_mas),
+            Write(gm_circle),
+            Write(tx_ejem_cond),
+            Write(tx_imprime),
+        )
+
+        vt_x = ValueTracker(0)
+        tx_x = always_redraw(
+            lambda: Tex(f"$x = {int(vt_x.get_value())}$", font_size=44).to_edge(
+                UP, buff=1
+            )
+        )
+        # rs
+        self.play(Write(tx_x))
+
+        for i in range(5):
+            self.play(Indicate(tx_ejem_cond), run_time=0.4)
+            self.add(gm_dt_tip)
+            self.play(Create(gm_arc), tx_x_mas.animate.set_opacity(1), run_time=2)
+            vt_x.set_value(vt_x.get_value() + 1)
+            self.play(
+                tx_x_mas.animate.set_opacity(0.4),
+                FadeOut(gm_dt_tip),
+                FadeOut(gm_arc),
+                run_time=0.5,
+            )
+        while vt_x.get_value() < 20:
+            self.play(Indicate(tx_ejem_cond), run_time=0.05)
+            self.add(gm_dt_tip)
+            self.play(Create(gm_arc), tx_x_mas.animate.set_opacity(1), run_time=0.05)
+            vt_x.set_value(vt_x.get_value() + 1)
+            self.play(
+                tx_x_mas.animate.set_opacity(0.4),
+                FadeOut(gm_dt_tip),
+                FadeOut(gm_arc),
+                run_time=0.01,
+            )
+
+        self.play(vt_x.animate.set_value(95), run_time=5)
+
+        while vt_x.get_value() < 100:
+            self.play(Indicate(tx_ejem_cond), run_time=0.05)
+            self.add(gm_dt_tip)
+            self.play(Create(gm_arc), tx_x_mas.animate.set_opacity(1), run_time=0.05)
+            vt_x.set_value(vt_x.get_value() + 1)
+            self.play(
+                tx_x_mas.animate.set_opacity(0.4),
+                FadeOut(gm_dt_tip),
+                FadeOut(gm_arc),
+                run_time=0.01,
+            )
+        self.wait()

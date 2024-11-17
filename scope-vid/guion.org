@@ -57,21 +57,31 @@ Y yo dire, tienes razon. Pero tenai que poner un ejemplo sencillo.
 
 El for
 
+Ambos ciclos funcionan esencialmente asi. Haz esto una y otra vez mientras esta condicion se cumpla y cuando ya no se
+cumpla, deja de repetirlo.
 
-*for* 
-El ciclo for se puede traducir como para. Pero es mas facil pensarlo como si dijeramos mientras que se cumpla esta condicion vas a
-jecutar estos pasos una y otra vez, como si dieramos vueltas en un ciruclo  repitiendo lo mismos pasos, por eso
-precisamente  le llamamos ciclo
+Un caso especifico puede ser el anterior
 
-Pasamos al codigo.....
+Para i < 100 haz estos pasos... Especificamente podemos decir,
+inicializa i = 0, para i < 100 haz estos pasos y luego sumale 1 a i al final de los pasos. Podemos ver que todos los
+pasos se van a repetir 100 veces
 
-ahora un ejemplo con arreglos
-arreglo
+Retomando el ejemplo anterior lo podriamos formular como Para x < 100 suma 1 a x, entonces cuando llegamos a 100 se
+rompe la condicion y tenemos que parar
+Pero mientras no se cumpla la condicion tenemos que repetir una y otra vez los pasos definidos, por eso le llamamos
+ciclo
 
 Otro ciclo...
 El while, ahora si de verdad, se traduce como mientras que. La verdad es que el while y el for funcionan de la misma
 manera: mientras que esta condicion se cumpla repite estos pasos. Pero... para que hay dos formas de hacer lo mismo?
 Pues resulta que hay sintaxis que parecen mas naturales dependiendo de la circunstancia.
+
+
+*for* 
+Pasamos al codigo.....
+
+ahora un ejemplo con arreglos
+arreglo
 
 Retomemos el caso del arreglo, y veamos que se puede imprimir de igual manera, pero no dirian que es mas comodo el for?
 La verdad es que el for es un while son practicamente iguales, y aqui se ve, pero con practica uno se va a ir acostumbrando a los dos.

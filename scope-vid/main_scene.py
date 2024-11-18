@@ -2,7 +2,7 @@
 #                   Create, FocusOn, Scene, Tex, Transform, Triangle, VGroup,
 #                   Write)
 
-from math import log, sqrt
+from math import cos, log, sqrt
 
 from manim import *
 
@@ -815,40 +815,34 @@ class LosCiclos(Scene):
         # rs
         self.play(Write(tx_x))
 
-        for i in range(5):
-            self.play(Indicate(tx_ejem_cond), run_time=0.4)
+        for i in range(4):
+            self.play(Indicate(tx_ejem_cond), run_time=0.2)
             self.add(gm_dt_tip)
-            self.play(Create(gm_arc), tx_x_mas.animate.set_opacity(1), run_time=2)
+            self.play(Create(gm_arc), tx_x_mas.animate.set_opacity(1), run_time=1)
             vt_x.set_value(vt_x.get_value() + 1)
             self.play(
                 tx_x_mas.animate.set_opacity(0.4),
                 FadeOut(gm_dt_tip),
                 FadeOut(gm_arc),
-                run_time=0.5,
-            )
-        while vt_x.get_value() < 20:
-            self.play(Indicate(tx_ejem_cond), run_time=0.05)
-            self.add(gm_dt_tip)
-            self.play(Create(gm_arc), tx_x_mas.animate.set_opacity(1), run_time=0.05)
-            vt_x.set_value(vt_x.get_value() + 1)
-            self.play(
-                tx_x_mas.animate.set_opacity(0.4),
-                FadeOut(gm_dt_tip),
-                FadeOut(gm_arc),
-                run_time=0.01,
+                run_time=0.2,
             )
 
-        self.play(vt_x.animate.set_value(95), run_time=5)
+        def easeInOutSine(x: float) -> float:
+            return 0.5 * (1 - cos(PI * x))
 
-        while vt_x.get_value() < 100:
-            self.play(Indicate(tx_ejem_cond), run_time=0.05)
+        cur = vt_x.get_value()
+        for i in range(int(cur), 101):
+            progress = vt_x.get_value() / 100.0
+            f = easeInOutSine(progress)  # Apply the easing function
+            f *= 0.1  # Scale the easing factor if necessary
+
+            self.play(Indicate(tx_ejem_cond), run_time=0.4 * f)
             self.add(gm_dt_tip)
-            self.play(Create(gm_arc), tx_x_mas.animate.set_opacity(1), run_time=0.05)
+            self.play(Create(gm_arc), tx_x_mas.animate.set_opacity(1), run_time=2 * f)
             vt_x.set_value(vt_x.get_value() + 1)
-            self.play(
+            self.play
                 tx_x_mas.animate.set_opacity(0.4),
                 FadeOut(gm_dt_tip),
                 FadeOut(gm_arc),
-                run_time=0.01,
+                run_time=0.5 * f,
             )
-        self.wait()

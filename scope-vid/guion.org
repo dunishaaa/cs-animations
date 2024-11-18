@@ -55,7 +55,8 @@ hacemos esto
 Alguien que este poniendo atencion pdora decir, por que no sumamos 0 + 5? Otra podra decir por que no x = 5*1?
 Y yo dire, tienes razon. Pero tenai que poner un ejemplo sencillo.
 
-El for
+El for y el while son esencialmente igual. Podemos simplificarlo a simpmenente decir "haz esto una y otra vez mientras
+esto sea cierto
 
 Ambos ciclos funcionan esencialmente asi. Haz esto una y otra vez mientras esta condicion se cumpla y cuando ya no se
 cumpla, deja de repetirlo.

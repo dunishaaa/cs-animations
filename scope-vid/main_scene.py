@@ -680,7 +680,7 @@ class Ciclos(Scene):
 class LosCiclos(Scene):
     def construct(self):
         grid = NumberPlane().add_coordinates().set_opacity(0.3)
-        self.add(grid)
+        # self.add(grid)
         # ss
         tx_ti_ciclos = Tex(
             r"""\textbf{Ciclos usados en programación...}""", font_size=22
@@ -702,13 +702,21 @@ class LosCiclos(Scene):
         self.play(Unwrite(tx_ti_ciclos), run_time=0.6)
         self.play(FadeTransform(tx_ti_ciclos, tx_for_while))
 
-        gm_circle = Circle(radius=sqrt(2), stroke_color=GREY).set_stroke(opacity=0.4)
-
-        gm_arc = ArcBetweenPoints(
-            start=UR, end=UL, angle=-6 / 4 * PI, stroke_color=YELLOW
+        gm_circle = (
+            Circle(radius=sqrt(2), stroke_color=GREY)
+            .set_stroke(opacity=0.4)
+            .rotate(PI / 2)
         )
+
         gm_dt_tip = Dot(UL, color=YELLOW)
-        gm_dt_tip.add_updater(lambda d: d.move_to(gm_arc.get_end()))
+        gm_tr_path = TracedPath(
+            gm_dt_tip.get_center,
+            dissipating_time=0.5,
+            stroke_opacity=[0, 1],
+            stroke_color=YELLOW,
+            stroke_width=2,
+        )
+        self.add(gm_tr_path)
 
         tx_haz_esto = Tex(
             R"""
@@ -739,12 +747,16 @@ class LosCiclos(Scene):
         for i in range(5):
             self.play(Indicate(tx_condition), run_time=0.4)
             gm_dt_tip.set_opacity(1)
-            gm_arc.set_stroke(opacity=1)
-            self.play(Create(gm_arc), tx_haz_esto.animate.set_opacity(1), run_time=1)
+            self.play(
+                MoveAlongPath(gm_dt_tip, gm_circle, rate_func=linear),
+                gm_circle.animate(run_time=0.05).set_stroke(color=YELLOW),
+                tx_haz_esto.animate.set_opacity(1),
+                run_time=1,
+            )
             self.play(
                 tx_haz_esto.animate.set_opacity(0.4),
+                gm_circle.animate(run_time=0.05).set_stroke(color=WHITE),
                 FadeOut(gm_dt_tip),
-                FadeOut(gm_arc),
                 run_time=0.5,
             )
 
@@ -769,9 +781,11 @@ class LosCiclos(Scene):
         self.play(Write(tx_practico))
         self.play(FadeOut(tx_practico))
 
+        gm_sq = Square(4, color=PURPLE).to_edge(LEFT, buff=0.5)
+
         tx_ejem_cond = Tex(
             R"""
-            \textbf{$x > 100$}
+            \textbf{$x > 20$}
             """,
             font_size=32,
             color=GREEN,
@@ -782,14 +796,15 @@ class LosCiclos(Scene):
             \textbf{Inicializa x = 0}
             """,
             font_size=30,
-        ).to_edge(LEFT, buff=1.0)
+        ).move_to(gm_sq.get_center())
 
+        gm_sq.to_edge(RIGHT, buff=0.5)
         tx_imprime = Tex(
             R"""
             \textbf{Imprime x}
             """,
             font_size=30,
-        ).to_edge(RIGHT, buff=1.0)
+        ).move_to(gm_sq.get_center())
 
         tx_x_mas = Tex(
             R"""
@@ -798,12 +813,24 @@ class LosCiclos(Scene):
             font_size=32,
         )
 
+        gm_sq.to_edge(LEFT, buff=0.5)
+
+        gm_arr_1 = Arrow(start=ORIGIN, end=[1.3, 0, 0]).move_to([-2.5, 0, 0])
+        gm_arr_2 = Arrow(start=ORIGIN, end=[1.3, 0, 0]).move_to([2.5, 0, 0])
+
         self.play(
             Write(tx_init),
             Write(tx_x_mas),
             Write(gm_circle),
             Write(tx_ejem_cond),
             Write(tx_imprime),
+            Write(gm_arr_1),
+            Write(gm_arr_2),
+        )
+
+        # rs
+        self.play(
+            Write(gm_sq),
         )
 
         vt_x = ValueTracker(0)
@@ -812,18 +839,29 @@ class LosCiclos(Scene):
                 UP, buff=1
             )
         )
-        # rs
         self.play(Write(tx_x))
+        self.add(gm_tr_path)
 
+        self.play(Wiggle(gm_sq))
+        self.play(
+            gm_sq.animate.move_to(gm_circle.get_center()),
+        )
+
+        self.play(Wiggle(gm_sq))
+        # ss
         for i in range(4):
             self.play(Indicate(tx_ejem_cond), run_time=0.2)
-            self.add(gm_dt_tip)
-            self.play(Create(gm_arc), tx_x_mas.animate.set_opacity(1), run_time=1)
+            self.add(gm_dt_tip, gm_tr_path)
+            self.play(
+                MoveAlongPath(gm_dt_tip, gm_circle, rate_func=linear),
+                gm_circle.animate(run_time=0.05).set_stroke(color=YELLOW),
+                tx_x_mas.animate.set_opacity(1),
+                run_time=1,
+            )
             vt_x.set_value(vt_x.get_value() + 1)
             self.play(
                 tx_x_mas.animate.set_opacity(0.4),
-                FadeOut(gm_dt_tip),
-                FadeOut(gm_arc),
+                gm_circle.animate(run_time=0.05).set_stroke(color=WHITE),
                 run_time=0.2,
             )
 
@@ -831,18 +869,46 @@ class LosCiclos(Scene):
             return 0.5 * (1 - cos(PI * x))
 
         cur = vt_x.get_value()
-        for i in range(int(cur), 101):
-            progress = vt_x.get_value() / 100.0
+        self.remove(gm_tr_path)
+        flag = True
+        gm_circle.set_stroke(color=YELLOW)
+        for i in range(int(cur), 20):
+
+            progress = vt_x.get_value() / 20.0
             f = easeInOutSine(progress)  # Apply the easing function
-            f *= 0.1  # Scale the easing factor if necessary
+            f *= 0.005  # Scale the easing factor if necessary
 
             self.play(Indicate(tx_ejem_cond), run_time=0.4 * f)
-            self.add(gm_dt_tip)
-            self.play(Create(gm_arc), tx_x_mas.animate.set_opacity(1), run_time=2 * f)
-            vt_x.set_value(vt_x.get_value() + 1)
-            self.play
-                tx_x_mas.animate.set_opacity(0.4),
-                FadeOut(gm_dt_tip),
-                FadeOut(gm_arc),
-                run_time=0.5 * f,
+            self.play(
+                MoveAlongPath(gm_dt_tip, gm_circle, rate_func=linear),
+                tx_x_mas.animate.set_opacity(1),
+                run_time=0.2,
             )
+            vt_x.set_value(vt_x.get_value() + 1)
+            tx_x_mas.set_opacity(0.4),
+
+        self.play(gm_sq.animate.move_to(tx_imprime.get_center()))
+        self.play(Wiggle(gm_sq))
+
+        self.wait(1)
+
+
+class test(Scene):
+    def construct(self):
+        vt_x = ValueTracker(0)
+        gm_arc = ArcBetweenPoints(
+            start=UR, end=UL, angle=-6 / 4 * PI, stroke_color=YELLOW
+        )
+
+        tx_x = always_redraw(
+            lambda: Tex(f"{int(vt_x.get_value())}", font_size=46).to_corner(
+                UL, buff=0.5
+            )
+        )
+        self.add(tx_x)
+        gm_dt_tip = Dot(UL, color=YELLOW)
+        gm_dt_tip.add_updater(lambda d: d.move_to(gm_arc.get_end()))
+        self.add(gm_dt_tip)
+        self.play(vt_x.animate.set_value(10))
+        self.wait()
+        ApplyMethod

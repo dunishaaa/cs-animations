@@ -815,22 +815,15 @@ class LosCiclos(Scene):
 
         gm_sq.to_edge(LEFT, buff=0.5)
 
-        gm_arr_1 = Arrow(start=ORIGIN, end=[1.3, 0, 0]).move_to([-2.5, 0, 0])
-        gm_arr_2 = Arrow(start=ORIGIN, end=[1.3, 0, 0]).move_to([2.5, 0, 0])
-
-        self.play(
-            Write(tx_init),
-            Write(tx_x_mas),
-            Write(gm_circle),
-            Write(tx_ejem_cond),
-            Write(tx_imprime),
-            Write(gm_arr_1),
-            Write(gm_arr_2),
+        gm_arr_1 = (
+            Arrow(start=ORIGIN, end=[1.3, 0, 0])
+            .move_to([-2.5, 0, 0])
+            .set_stroke(opacity=0.4)
         )
-
-        # rs
-        self.play(
-            Write(gm_sq),
+        gm_arr_2 = (
+            Arrow(start=ORIGIN, end=[1.3, 0, 0])
+            .move_to([2.5, 0, 0])
+            .set_stroke(opacity=0.4)
         )
 
         vt_x = ValueTracker(0)
@@ -839,7 +832,24 @@ class LosCiclos(Scene):
                 UP, buff=1
             )
         )
-        self.play(Write(tx_x))
+
+        self.play(
+            Succession(
+                Write(tx_ejem_cond),
+                Write(tx_init),
+                Write(gm_arr_1),
+                Write(tx_x),
+                Write(tx_x_mas),
+                Write(gm_circle),
+                Write(gm_arr_2),
+                Write(tx_imprime),
+            )
+        )
+
+        self.play(
+            Write(gm_sq),
+        )
+
         self.add(gm_tr_path)
 
         self.play(Wiggle(gm_sq))
@@ -848,7 +858,6 @@ class LosCiclos(Scene):
         )
 
         self.play(Wiggle(gm_sq))
-        # ss
         for i in range(4):
             self.play(Indicate(tx_ejem_cond), run_time=0.2)
             self.add(gm_dt_tip, gm_tr_path)
@@ -887,10 +896,87 @@ class LosCiclos(Scene):
             vt_x.set_value(vt_x.get_value() + 1)
             tx_x_mas.set_opacity(0.4),
 
+        # rs
+        self.play(
+            Indicate(tx_ejem_cond, color=RED),
+            gm_circle.animate.set_color(RED),
+            tx_x_mas.animate.set_color(RED),
+            gm_dt_tip.animate.set_color(RED),
+        )
+        tx_ejem_cond.set_color(RED)
+
         self.play(gm_sq.animate.move_to(tx_imprime.get_center()))
         self.play(Wiggle(gm_sq))
 
+        self.wait(5)
+
+
+class ForVsWhile(Scene):
+    def construct(self):
+
+        tx_ti = Tex("El for vs el while", font_size=60)
+        self.play(Write(tx_ti))
+        self.wait(3)
+        self.play(Uncreate(tx_ti))
         self.wait(1)
+
+        tx_for = Tex(
+            r"""
+            \underline{\textbf{for}}
+            """,
+            font_size=40,
+        ).shift(UP * 2 + LEFT * 2.2)
+
+        tx_ls_for = Tex(
+            r"""
+            \begin{enumerate} 
+                \setlength{\itemsep}{0.1cm}
+                \item Número de iteraciones definido.
+                \item Recorrer arreglos, vectores, etc...
+                \item Iterar sobre un rango de números.
+                \item Recorrer una string.
+            \end{enumerate}
+            """,
+            font_size=22,
+        ).next_to(tx_for, DOWN, buff=0.3)
+
+        tx_while = Tex(
+            r"""
+            \underline{\textbf{while}}
+            """,
+            font_size=40,
+        ).shift(UP * 2 + RIGHT * 2.2)
+        tx_ls_while = Tex(
+            r"""
+            \begin{enumerate} 
+                \setlength{\itemsep}{0.1cm}
+                \item Número de iteraciones desconocido.
+                \item Recorrer grafos.
+                \item Recibir input.
+                \item Leer archivos.
+            \end{enumerate}
+            """,
+            font_size=22,
+        ).next_to(tx_while, DOWN, buff=0.3)
+
+        self.play(
+            Write(tx_for),
+            Write(tx_ls_for, run_time=5),
+        )
+        self.wait(10)
+        self.play(
+            Write(tx_while),
+            Write(tx_ls_while, run_time=5),
+        )
+        self.wait(10)
+
+        gp = VGroup()
+        gp += tx_ls_for
+        gp += tx_for
+        gp += tx_while
+        gp += tx_ls_while
+        self.play(FadeOut(gp))
+        self.wait(5)
 
 
 class test(Scene):

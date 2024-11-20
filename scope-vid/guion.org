@@ -55,21 +55,17 @@ hacemos esto
 Alguien que este poniendo atencion pdora decir, por que no sumamos 0 + 5? Otra podra decir por que no x = 5*1?
 Y yo dire, tienes razon. Pero tenai que poner un ejemplo sencillo.
 
-El for y el while son esencialmente igual. Podemos simplificarlo a simpmenente decir "haz esto una y otra vez mientras
-esto sea cierto
+El for y el while son esencialmente iguales. 
+Ambos ciclos funcionan esencialmente de la siguiente manera. Haz estos pasos una y otra vez mientras esta condicion se cumpla.
+Cada que hacemos un ciclo verificamos que la condicion se siga cumpliendo y cuando ya no se
+cumpla, dejamos de repetirlo.
 
-Ambos ciclos funcionan esencialmente asi. Haz esto una y otra vez mientras esta condicion se cumpla y cuando ya no se
-cumpla, deja de repetirlo.
+Podemos ver esto en el ejemplo inicial 
 
-Un caso especifico puede ser el anterior
+Recordemos que queremos inicializar x en 0 y incrementarlo en 1 hasta cierto numero, en esta caso 20
 
-Para i < 100 haz estos pasos... Especificamente podemos decir,
-inicializa i = 0, para i < 100 haz estos pasos y luego sumale 1 a i al final de los pasos. Podemos ver que todos los
-pasos se van a repetir 100 veces
-
-Retomando el ejemplo anterior lo podriamos formular como Para x < 100 suma 1 a x, entonces cuando llegamos a 100 se
-rompe la condicion y tenemos que parar
-Pero mientras no se cumpla la condicion tenemos que repetir una y otra vez los pasos definidos, por eso le llamamos
+Especificamente podemos decir,
+inicializa x = 0, para x < 20 sumale 1 al x actual. y una vez que x llegue a veinte imprime x
 ciclo
 
 Otro ciclo...

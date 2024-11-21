@@ -524,14 +524,35 @@ class Ciclos(Scene):
     def construct(self):
         tx_title_for = Tex("Ciclos").scale(2).generate_target()
         # ss
+        circ = Circle(color=RED).to_edge(DOWN, buff=1.3).shift(4 * LEFT)
+        dot = Dot(color=RED).move_to(circ.get_start())
+        rolling_circle = VGroup(circ, dot)
+        trace = TracedPath(circ.get_start, dissipating_time=0.6, stroke_opacity=[0, 1])
+        rolling_circle.add_updater(lambda m: m.rotate(-0.3))
+
         self.play(Write(tx_title_for))
-        self.play(Unwrite(tx_title_for))
+
+        self.wait(3)
+        self.play(FadeIn(trace), FadeIn(rolling_circle))
+        self.play(rolling_circle.animate.shift(8 * RIGHT), run_time=3, rate_func=linear)
+        self.play(rolling_circle.animate.shift(8 * LEFT), run_time=3, rate_func=linear)
+
+        self.play(
+            FadeOut(rolling_circle),
+            FadeOut(trace),
+        )
+        self.play(
+            Unwrite(tx_title_for),
+        )
 
         tx_ejemplo = Tex("Un ejemplo...").scale(2)
         tx_ejemplo.generate_target()
         tx_ejemplo.target.scale(0.5).to_corner(UL, buff=0.8)
         self.play(Write(tx_ejemplo))
+        self.wait(4)
         self.play(MoveToTarget(tx_ejemplo))
+
+        self.wait(6)
 
         tx_ti_algo = Tex(
             r"""
@@ -584,18 +605,6 @@ class Ciclos(Scene):
         pl = NumberPlane().add_coordinates()
         # self.add(pl)
 
-        # rs
-        self.play(Write(vg_algo), run_time=6)
-
-        vg_algo -= tx_fst_algo
-        prev_algo.next_to(tx_ti_algo, DOWN, buff=0.3)
-
-        self.play(Transform(tx_fst_algo, prev_algo))
-
-        rn_time = [2, 2, 1.5, 1.0, 0.5, 0.4, 0.3, 0.1]
-        wait_time = [1, 1, 0.8, 0.5, 0.4, 0.3, 0.3, 0.07]
-        sc = [max(min(10, x) / 10, 0.5) for x in range(20, 0, -1)]
-
         vt_n = ValueTracker(7)
 
         tx_n_pasos = always_redraw(
@@ -604,8 +613,21 @@ class Ciclos(Scene):
             .next_to(tx_ti_algo, UP, buff=0.1)
         )
 
+        self.play(Write(vg_algo), run_time=4)
+        self.wait(10)
         self.play(Write(tx_n_pasos))
+        self.wait(15)
 
+        vg_algo -= tx_fst_algo
+        prev_algo.next_to(tx_ti_algo, DOWN, buff=0.3)
+
+        self.play(Transform(tx_fst_algo, prev_algo))
+
+        rn_time = [1, 0.8, 0.5, 0.5, 0.5, 0.4, 0.3, 0.1]
+        wait_time = [0.5, 0.5, 0.5, 0.5, 0.4, 0.3, 0.3, 0.07]
+        sc = [max(min(10, x) / 10, 0.5) for x in range(20, 0, -1)]
+
+        # ss
         self.remove(tx_fst_algo)
         for i in range(20):
             head_algo_worst += definir_x_1
@@ -630,15 +652,17 @@ class Ciclos(Scene):
             self.remove(prev_algo)
             prev_algo = new_algo
 
+        # ss
         self.play(vt_n.animate.set_value(100))
 
         vg_algo += prev_algo
+
+        self.wait(5)
 
         self.play(FadeOut(tx_n_pasos))
 
         self.play(vg_algo.animate.shift(LEFT * 2))
 
-        # ss
         tx_ti_algo_mej = (
             Tex(
                 r"""
@@ -663,18 +687,22 @@ class Ciclos(Scene):
             """,
             font_size=22,
         ).next_to(tx_ti_algo_mej, DOWN, buff=0.4)
-        self.play(Write(tx_fst_algo_mej))
-        self.wait()
+        self.play(Write(tx_fst_algo_mej), run_time=7)
+        self.wait(24)
 
         vg_algo = vg_algo + tx_ejemplo + tx_fst_algo_mej + tx_ti_algo_mej
 
+        # rs
         self.play(FadeOut(vg_algo), run_time=1.5)
 
-        tx_pero = Tex(r"""\textbf{Pero ¿por qué no simplemente...}  $x += 100$?""")
+        tx_pero = Tex(r"""\textbf{Pero ¿por qué no simplemente...}  x += 100?""")
 
-        wv = 3
         self.play(Write(tx_pero))
+        self.wait(3)
+        wv = 16
         self.play(ApplyWave(tx_pero, ripples=wv, time_width=wv, run_time=wv))
+
+        self.wait(5)
 
 
 class LosCiclos(Scene):
@@ -699,8 +727,11 @@ class LosCiclos(Scene):
 
         self.play(Write(tx_ti_ciclos))
 
-        self.play(Unwrite(tx_ti_ciclos), run_time=0.6)
+        self.wait(1)
+
+        self.play(Unwrite(tx_ti_ciclos), run_time=0.5)
         self.play(FadeTransform(tx_ti_ciclos, tx_for_while))
+        self.wait(3)
 
         gm_circle = (
             Circle(radius=sqrt(2), stroke_color=GREY)
@@ -733,6 +764,8 @@ class LosCiclos(Scene):
             color=GREEN,
         ).next_to(tx_for_while, DOWN, buff=0.5)
 
+        self.wait(5)
+
         self.play(Write(tx_haz_esto))
         self.wait(1)
 
@@ -741,8 +774,10 @@ class LosCiclos(Scene):
             Create(gm_circle),
             run_time=1,
         )
+        self.wait(4)
         self.play(Write(tx_condition))
         self.play(tx_condition.animate.move_to([0, 1.5, 0]))
+        self.wait(4)
 
         for i in range(5):
             self.play(Indicate(tx_condition), run_time=0.4)
@@ -759,7 +794,6 @@ class LosCiclos(Scene):
                 FadeOut(gm_dt_tip),
                 run_time=0.5,
             )
-
         self.play(
             Indicate(tx_condition, color=RED, run_time=0.7),
         )
@@ -771,7 +805,7 @@ class LosCiclos(Scene):
             FadeOut(tx_condition, run_time=0.7),
             FadeOut(tx_for_while, run_time=0.7),
         )
-
+        self.wait(5)
         tx_practico = Tex(
             R"""
             Ahora un ejemplo práctico
@@ -779,7 +813,9 @@ class LosCiclos(Scene):
         )
 
         self.play(Write(tx_practico))
+        self.wait(20)
         self.play(FadeOut(tx_practico))
+        self.wait(4)
 
         gm_sq = Square(4, color=PURPLE).to_edge(LEFT, buff=0.5)
 
@@ -833,18 +869,24 @@ class LosCiclos(Scene):
             )
         )
 
+        # rs
         self.play(
             Succession(
-                Write(tx_ejem_cond),
                 Write(tx_init),
-                Write(gm_arr_1),
-                Write(tx_x),
+                Wait(3),
+                Write(gm_arr_1, run_time=0.3),
+                Write(tx_ejem_cond),
                 Write(tx_x_mas),
                 Write(gm_circle),
-                Write(gm_arr_2),
+                Wait(5),
+                Write(gm_arr_2, run_time=0.2),
                 Write(tx_imprime),
+                Wait(4),
+                Write(tx_x),
             )
         )
+
+        self.wait(2)
 
         self.play(
             Write(gm_sq),
@@ -858,6 +900,7 @@ class LosCiclos(Scene):
         )
 
         self.play(Wiggle(gm_sq))
+
         for i in range(4):
             self.play(Indicate(tx_ejem_cond), run_time=0.2)
             self.add(gm_dt_tip, gm_tr_path)
@@ -865,7 +908,7 @@ class LosCiclos(Scene):
                 MoveAlongPath(gm_dt_tip, gm_circle, rate_func=linear),
                 gm_circle.animate(run_time=0.05).set_stroke(color=YELLOW),
                 tx_x_mas.animate.set_opacity(1),
-                run_time=1,
+                run_time=0.7,
             )
             vt_x.set_value(vt_x.get_value() + 1)
             self.play(
@@ -896,7 +939,6 @@ class LosCiclos(Scene):
             vt_x.set_value(vt_x.get_value() + 1)
             tx_x_mas.set_opacity(0.4),
 
-        # rs
         self.play(
             Indicate(tx_ejem_cond, color=RED),
             gm_circle.animate.set_color(RED),
@@ -963,12 +1005,12 @@ class ForVsWhile(Scene):
             Write(tx_for),
             Write(tx_ls_for, run_time=5),
         )
-        self.wait(10)
+        self.wait(15)
         self.play(
             Write(tx_while),
             Write(tx_ls_while, run_time=5),
         )
-        self.wait(10)
+        self.wait(15)
 
         gp = VGroup()
         gp += tx_ls_for

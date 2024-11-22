@@ -2,15 +2,19 @@
 Hola,  En esta serie de videos vamos a usar p5js, una herramienta open source, que sirve para crear arte y en esta ocasion la usaremos tambien para aprender a programar
 En este video vamos a ver una introducción básica a conceptos de programación, para poder hacer cualquier tipo d       e visualización, puede ser artistica o una simulacion de un fenomeno fisico.
 
-Primero vamos a definir que es progqueramar. aaaa
+_Primero_ vamos a definir que es progqueramar. aaaa
 Programar es simplemente crear una serie de instrucciones para que la computadora ejecutelo. Dicho de otra forma es un  algoritmo y  hay muchos algoritmos para una infinidad de palciaciones, pero por ahora solo hay que recordar que programar es darle instrucciones a la computadora para que ejecute.
          
 
-Ahora vamos a pasar a un ejemplo
-Por poner un ejemplo, si quisiéramos que un perrito llegará de un punto A a un punto B,  podemos decirle “Camina del punto A al punto B ya son instrucciones, ya es un algoritmos. Obviamente depende del contexto del prog      rama que tan especificos tenemos que ser.
- Siguiendo ese mismo ejemplo podemos decir:
-(Hacer dibujos en la tablet)          
-Hay un perrito en el punto A = (2, 3) as y queremos que llegue al punto B = (4, 6), entonces nuestras instrucciones podrian ser “Camina 2 pasos en x y luego 3 pasos en Y” o podria ser “Camina 3 pasos en y y 2 en X” y tambi’en funcionaria. Como podemos ver,  hay muchos posibles algoritmos para obtener un mismo resultado.
+* Ahora vamos a pasar a un ejemplo
+*** Por poner un ejemplo, si quisiéramos que un perrito llegará de un punto A a un punto B,  podemos decirle “Camina del punto A al punto B ya son instrucciones, ya es un algoritmos. Obviamente depende del contexto del prog      rama que tan especificos tenemos que ser.
+    Siguiendo ese mismo ejemplo podemos decir:
+    (Hacer dibujos en la tablet)          
+    Hay un perrito en el punto A = (2, 3) as y queremos que llegue al punto B = (4, 6), entonces nuestras instrucciones podrian ser “Camina 2 pasos en x y luego 3 pasos en Y” o podria ser “Camina 3 pasos en y y 2 en X” y tambi’en funcionaria. Como podemos ver,  hay muchos posibles algoritmos para obtener un mismo resultado.
+
+|
+|
+|
 
 Ahora pasemos a conceptos mas particulares de lo que nos importa, vamos a programar de verdad. En esta serie de videos vamos a usar p5js, p5js cual usa el lenguaje de programacion JavaScript, que no me gusta, pero podemos crear cosas muy padres con el. 
 

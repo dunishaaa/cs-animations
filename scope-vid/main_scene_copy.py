@@ -19,7 +19,7 @@ class TruIntro(Scene):
 
 class Intro(Scene):
     def construct(self):
-        # ss
+        self.next_section(skip_animations=True)
         tx_que_funcion = Tex("¿Qué es una función?").scale(1.4)
         self.play(Write(tx_que_funcion))
 
@@ -118,7 +118,7 @@ class Intro(Scene):
 
         self.play(tx_out.animate.set_opacity(0.7), tx_in.animate.set_opacity(0.7))
 
-        # rs
+        self.next_section(skip_animations=False)
         self.play(Restore(gm_tr_0), FadeOut(gm_sq_0), run_time=1)
         self.wait(1)
 
@@ -182,7 +182,7 @@ class Intro(Scene):
         self.play(Create(gm_arr_1), Create(tx_fn_sU))
         self.play(Write(tx_uno))
         self.play(MoveToTarget(tx_uno))
-        # ss
+        self.next_section(skip_animations=True)
 
         self.play(
             FadeOut(gp_funcion_sin_params),
@@ -293,7 +293,7 @@ def hp_set_opacity(obj: VMobject, og_line: Line, vlt: ValueTracker):
 
 class DetallesScope(Scene):
     def construct(self):
-        # ss
+        self.next_section(skip_animations=True)
         tx_title = Text(
             "¿Qué es el scope(o alcance)?", t2w={"scope": BOLD}, t2c={"scope": BLUE}
         )
@@ -312,7 +312,7 @@ class DetallesScope(Scene):
             UP, buff=0.7
         )
 
-        # ss
+        self.next_section(skip_animations=True)
         self.play(Write(tx_brackets))
 
         cb_js = (
@@ -341,7 +341,7 @@ class DetallesScope(Scene):
             .scale(0.5)
             .next_to(cb_js, RIGHT, buff=1)
         )
-        # rs
+        self.next_section(skip_animations=False)
 
         self.play(Write(cb_js), Write(cb_py))
 
@@ -524,7 +524,7 @@ class Scope(Scene):
 class Ciclos(Scene):
     def construct(self):
         tx_title_for = Tex("Ciclos").scale(2).generate_target()
-        # ss
+        self.next_section(skip_animations=True)
         circ = Circle(color=RED).to_edge(DOWN, buff=1.3).shift(4 * LEFT)
         dot = Dot(color=RED).move_to(circ.get_start())
         rolling_circle = VGroup(circ, dot)
@@ -628,7 +628,7 @@ class Ciclos(Scene):
         wait_time = [0.5, 0.5, 0.5, 0.5, 0.4, 0.3, 0.3, 0.07]
         sc = [max(min(10, x) / 10, 0.5) for x in range(20, 0, -1)]
 
-        # ss
+        self.next_section(skip_animations=True)
         self.remove(tx_fst_algo)
         for i in range(20):
             head_algo_worst += definir_x_1
@@ -653,7 +653,7 @@ class Ciclos(Scene):
             self.remove(prev_algo)
             prev_algo = new_algo
 
-        # ss
+        self.next_section(skip_animations=True)
         self.play(vt_n.animate.set_value(100))
 
         vg_algo += prev_algo
@@ -693,7 +693,7 @@ class Ciclos(Scene):
 
         vg_algo = vg_algo + tx_ejemplo + tx_fst_algo_mej + tx_ti_algo_mej
 
-        # rs
+        self.next_section(skip_animations=False)
         self.play(FadeOut(vg_algo), run_time=1.5)
 
         tx_pero = Tex(r"""\textbf{Pero ¿por qué no simplemente...}  x += 100?""")
@@ -710,7 +710,7 @@ class LosCiclos(Scene):
     def construct(self):
         grid = NumberPlane().add_coordinates().set_opacity(0.3)
         # self.add(grid)
-        # ss
+        self.next_section(skip_animations=True)
         tx_ti_ciclos = Tex(
             r"""\textbf{Ciclos usados en programación...}""", font_size=22
         ).scale(2.7)
@@ -870,7 +870,7 @@ class LosCiclos(Scene):
             )
         )
 
-        # rs
+        self.next_section(skip_animations=False)
         self.play(
             Succession(
                 Write(tx_init),
